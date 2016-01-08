@@ -1,0 +1,12 @@
+.beardyModal{
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  display: block;
+  width: 200px;
+  height: 200px;
+  z-index: 1000;
+  background-color: red;
+  padding: 30px;
+  box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 3px
+}
