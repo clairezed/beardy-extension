@@ -1,6 +1,34 @@
 Beardy extension
 =========
 
+*2016/01 - Development in progress*
+
+# How to
+
+## How to install
+
+It's not available yet in chrome store !
+
+In the meanwhile, you can install it yourself in your browser.
+```
+$ cd the-place-you-want
+$ git clone git@github.com:clairezed/beardy-extension.git
+```
+Then
+- in your browser, go to: chrome://extensions
+- enable Developer mode
+- load app as an unpacked extension.
+
+Don't forget to reload it (go to: chrome://extensions, find the extension, click on "Reload (Ctrl+R)") if you change something in the extension !
+
+## How to use
+
+Navigate to manly organizations website (http://www.bdangouleme.com, for instance), and enjoy !
+
+# Documentation
+
+Links and information I use to develop this app (in perpetual evolution)
+
 ## Element of the extensions (defined in manifest)
 
 - **Background Pages** : persistent background script or event script that plays the role of a bridge between the other parts of the extension.
@@ -30,7 +58,7 @@ Make sure that you check Developer mode and click the Load unpacked extension...
 - `background.js`  is loaded in the background. To inspect it visit chrome://extensions, find the loaded extension, and "inspect active views" for the background script.
 
 
-## Documentation
+## Resources
 
 ### Generic
 - [Understanding Google Chrome Extensions](https://gist.github.com/jjperezaguinaga/4243341)
