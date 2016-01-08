@@ -24,6 +24,7 @@ Don't forget to reload it (go to: chrome://extensions, find the extension, click
 ## How to use
 
 Navigate to manly organizations website (http://www.bdangouleme.com, for instance), and enjoy !
+*You may have to insist, to wake external server up. Try alternatively to reload the extension and the webpage you're on)*
 
 # Documentation
 
