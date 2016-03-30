@@ -1,3 +1,62 @@
+@-webkit-keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideOutUp {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes slideOutUp {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.beardyModal--animated{
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
 .beardyModal{
   position: fixed;
   top: 5%;
@@ -6,7 +65,66 @@
   width: 200px;
   height: 200px;
   z-index: 1000;
-  background-color: red;
-  padding: 30px;
-  box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 3px
+  background-color: #f9f9f9;
+  padding: 30px 25px;
+  color: #66625b;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 3px;
+  -webkit-animation-name: slideInDown;
+  animation-name: slideInDown;
+}
+
+.beardyModal--hide{
+    -webkit-animation-name: slideOutUp;
+  animation-name: slideOutUp;
+}
+
+.beardyModal--dismiss-btn{
+  float: right;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  font-weight: 700;
+  position: relative;
+  top: -15px;
+  right: -10px;
+  font-size: 14px;
+  color:  #66625b;
+}
+
+.beardyModal--dismiss-btn:hover{
+    color:  #59554f;
+  }
+
+.beardyModal--title{
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.beardyModal--paragraph{
+  margin-bottom: 20px;
+}
+.beardyModal--picture{
+  float: left;
+  width: 80px;
+  margin-right: 15px;
+}
+
+.beardyModal--button{
+  background-color: #66625b;
+  color: #f9f9f9;
+  text-decoration: none;
+  padding: 6px 12px;
+  margin: 0 auto;
+  display: block;
+  width: 85px;
+  text-align: center;
+}
+
+.beardyModal--button:hover{
+  background-color: #59554f;
+  color: #f9f9f9;
+  text-decoration: none
 }

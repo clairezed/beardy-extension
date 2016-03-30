@@ -64,6 +64,7 @@ Make sure that you check Developer mode and click the Load unpacked extension...
 ### Generic
 - [Understanding Google Chrome Extensions](https://gist.github.com/jjperezaguinaga/4243341)
 - https://coderwall.com/p/hkmedw/understanding-chrome-extensions
+- https://css-tricks.com/colorpeek-part-2-building-first-chrome-extension/
 
 - To insert code into a page, your extension must have cross-origin permissions for the page. It also must be able to use the chrome.tabs module.
 
@@ -79,10 +80,14 @@ Inject only on selected pages :
 - http://stackoverflow.com/questions/9515704/building-a-chrome-extension-inject-code-in-a-page-using-a-content-script
 - http://stackoverflow.com/questions/9880773/inject-chrome-browser-extension-content-script-based-on-url
 
+css isolation
+
+- http://anderspitman.com/blog/2014/08/04/chrome-extension-content-script-stylesheet-isolation/
+
 ### Use templates in extensions
 
 - http://stackoverflow.com/questions/14250210/what-is-the-suggested-way-to-use-template-in-chrome-content-scripts
-- http://stackoverflow-.com/questions/12616158/js-templating-in-google-chrome-extensionmanifest-v2
+- http://stackoverflow.com/questions/12616158/js-templating-in-google-chrome-extensionmanifest-v2
 
 ### Examples on github
 
@@ -92,3 +97,20 @@ Inject only on selected pages :
 ### Other stuff
 - Tuto using node web server, extension and socket io to display realtime notifications : http://blog.zenika.com/2011/05/11/a-full-javascript-architecture-part-two-chrome-extension2/
 - extension saving title, url and selected text as summary to bookmarks http://markb.co.uk/building-a-simple-google-chrome-extension.html
+
+
+## Todo
+
+// Appearance :
+
+- isolating : shadow dom ? iframe ?
+- make beardy pop up a template
+- style the whole
+- animated beard ?
+
+// Internal :
+
+- make it non persistent for a whole webpage (once it has been seen on one page, doesn't shows up again)
+- choose when to call external website (on installed ?)
+- stock 'website' variable on local storage ?
+- options ? (fade out after X seconds, or not)

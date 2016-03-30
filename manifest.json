@@ -35,6 +35,7 @@
   //      "all_frames": false
      }
   ],
+  "web_accessible_resources": [ "img/*.png" ],
  // "content_security_policy": "[POLICY STRING GOES HERE]"
   "manifest_version": 2
 

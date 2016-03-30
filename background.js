@@ -22,6 +22,23 @@ chrome.runtime.onInstalled.addListener(function() {
   getDataAndSetListeners();
 });
 
+chrome.runtime.onSuspend.addListener(function() {
+  console.log("runtime ON SUSPEND");
+})
+
+chrome.runtime.onUpdateAvailable.addListener(function() {
+  console.log("runtime ON onUpdateAvailable");
+})
+
+chrome.runtime.onConnect.addListener(function() {
+  console.log("runtime ON onConnect");
+})
+
+
+chrome.runtime.onRestartRequired.addListener(function() {
+  console.log("runtime ON onRestartRequired");
+})
+
 function getDataAndSetListeners() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "https://beardy-website.herokuapp.com/api/organizations", true);
@@ -34,13 +51,10 @@ function getDataAndSetListeners() {
       organizations = resp
       // Add listeners ---------------
       organizations.forEach(function(orga) {
-        console.log(orga);
-
-
+        // console.log(orga);
 
         chrome.webNavigation.onCommitted.addListener(function(e) {
-
-            console.log("WEB NAVIGATION XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            console.log("WEB NAVIGATION / ON COMMITTED ===================");
             //chrome.tabs.executeScript(null, {file: "content.js"});
             chrome.tabs.executeScript(null, {
               code: 'var organization = ' + JSON.stringify(orga)
@@ -61,40 +75,40 @@ function getDataAndSetListeners() {
 
 // Chrome TABS =====================================================================
 
-chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
-  console.log('tabs.onUpdated : ');
-  console.log("tabId : "+tabId);
-  console.log("change : ");
-  console.log(change);
-  console.log("tab : ");
-  console.log(tab);
-  // if (change.status == "complete") {
-  //       chrome.tabs.create({
-  //         url: chrome.extension.getURL('dialog.html'),
-  //         active: false
-  //       }, function(tab) {
-  //         // After the tab has been created, open a window to inject the tab
-  //         chrome.windows.create({
-  //           tabId: tab.id,
-  //           type: 'popup',
-  //           focused: true
-  //           // incognito, top, left, ...
-  //         });
-  //       });
-  // }
-});
+// chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
+//   // console.log('tabs.onUpdated : ');
+//   // console.log("tabId : "+tabId);
+//   // console.log("change : ");
+//   // console.log(change);
+//   // console.log("tab : ");
+//   // console.log(tab);
+//   // if (change.status == "complete") {
+//   //       chrome.tabs.create({
+//   //         url: chrome.extension.getURL('dialog.html'),
+//   //         active: false
+//   //       }, function(tab) {
+//   //         // After the tab has been created, open a window to inject the tab
+//   //         chrome.windows.create({
+//   //           tabId: tab.id,
+//   //           type: 'popup',
+//   //           focused: true
+//   //           // incognito, top, left, ...
+//   //         });
+//   //       });
+//   // }
+// });
 
 // ways to create popup :
 // - window.open
 // - chrome.windows.create
 
-chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
-  console.log('tabs.onSelectionChanged : ');
-  console.log(tabId);
+// chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
+//   console.log('tabs.onSelectionChanged : ');
+//   console.log(tabId);
 
-  // selectedId = tabId;
-  // updateSelected(tabId);
-});
+//   // selectedId = tabId;
+//   // updateSelected(tabId);
+// });
 
 // Ensure the current selected tab is set up.
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
