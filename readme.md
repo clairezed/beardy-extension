@@ -28,6 +28,12 @@ Navigate to manly organizations website (http://www.bdangouleme.com, for instanc
 
 # Documentation
 
+## Principle
+
+- on Install and on Update : get full list of urls on external website and stock them in localStorage
+- if can't reach external website : chek localStorage
+- if localStorage is empty : check cheat Array here for demo purpose
+
 Links and information I use to develop this app (in perpetual evolution)
 
 ## Element of the extensions (defined in manifest)

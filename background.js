@@ -1,5 +1,6 @@
 // var organizations = ['www.agglo-epinal.fr', 'www.grandlyon.com', 'http://localhost:3000/']
 var organizations;
+var currentUrl;
 
 
 chrome.runtime.onMessage.addListener(function(request) {
@@ -28,6 +29,7 @@ chrome.runtime.onSuspend.addListener(function() {
 
 chrome.runtime.onUpdateAvailable.addListener(function() {
   console.log("runtime ON onUpdateAvailable");
+  getDataAndSetListeners();
 })
 
 chrome.runtime.onConnect.addListener(function() {
@@ -49,39 +51,69 @@ function getDataAndSetListeners() {
       console.log("XHR RESP : ");
       console.log(resp);
       organizations = resp
+
+      chrome.storage.sync.set({'beardy_data': resp}, function() {
+          // Notify that we saved.
+          console.log('Settings saved');
+          chrome.storage.sync.get('beardy_data', function (result) {
+            console.log(result)
+          });
+        });
       // Add listeners ---------------
-      organizations.forEach(function(orga) {
-        // console.log(orga);
-
-        chrome.webNavigation.onCommitted.addListener(function(e) {
-            console.log("WEB NAVIGATION / ON COMMITTED ===================");
-            //chrome.tabs.executeScript(null, {file: "content.js"});
-            chrome.tabs.executeScript(null, {
-              code: 'var organization = ' + JSON.stringify(orga)
-            }, function() {
-              chrome.tabs.executeScript(null, {file: "content.js"});
-            });
-
-        }, {url: [{ urlContains: orga.website_url }]})
-      })
+      SetListeners()
     }
   }
   xhr.send();
 }
 
+function SetListeners() {
 
+  organizations.forEach(function(orga) {
+    // console.log(orga);
+
+    chrome.webNavigation.onCommitted.addListener(function(e) {
+        console.log("WEB NAVIGATION / ON COMMITTED ===================");
+        //chrome.tabs.executeScript(null, {file: "content.js"});
+        chrome.tabs.executeScript(null, {
+          code: 'var organization = ' + JSON.stringify(orga)
+        }, function() {
+          chrome.tabs.executeScript(null, {file: "content.js"});
+        });
+
+    }, {url: [{ urlContains: orga.website_url }]})
+  })
+};
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  for (key in changes) {
+    var storageChange = changes[key];
+    console.log('Storage key "%s" in namespace "%s" changed. ' +
+                'Old value was "%s", new value is "%s".',
+                key,
+                namespace,
+                storageChange.oldValue,
+                storageChange.newValue);
+  }
+});
 
 
 
 // Chrome TABS =====================================================================
 
-// chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
-//   // console.log('tabs.onUpdated : ');
-//   // console.log("tabId : "+tabId);
-//   // console.log("change : ");
-//   // console.log(change);
-//   // console.log("tab : ");
-//   // console.log(tab);
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  console.log('tabs.onUpdated : ');
+  // console.log("tabId : "+tabId);
+  // console.log("change : ");
+  // console.log(change);
+  console.log("tab : ");
+  console.log(tab);
+  chrome.tabs.getSelected(null,function(tab){
+  console.log("tabs.getSelected : ");
+    console.log(tab);
+    console.log(tab.url);
+    currentUrl=tab.url;
+  });
+
 //   // if (change.status == "complete") {
 //   //       chrome.tabs.create({
 //   //         url: chrome.extension.getURL('dialog.html'),
@@ -96,7 +128,7 @@ function getDataAndSetListeners() {
 //   //         });
 //   //       });
 //   // }
-// });
+});
 
 // ways to create popup :
 // - window.open
@@ -121,8 +153,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 // WebNavigation ===============================================
 //TODO : truover meilleure façon de chrcher sur les organizations ?
 // organizations.forEach(function(url) {
-//   chrome.webNavigation.onCommitted.addListener(function(e) {
-//       console.log("WEB NAVIGATION XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+  // chrome.webNavigation.onCommitted.addListener(function(e) {
+  //     console.log("WEB NAVIGATION OnCommited XXXXXXXXXXXXXXXXXXXXXXXXX");
 //       chrome.tabs.executeScript(null, {file: "content.js"});
 //   }, {url: [{ urlContains: url }]})
 // })
@@ -135,19 +167,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 // - chrome.webNavigation.onComitted ou onCompleted with filters + chrome.tabs.executeScript
 
 // chrome.browserAction.onClicked.addListener(function(tab) {
+//   console.log("browserAction.onClicked")
+//   console.log(tab)
 //   chrome.tabs.executeScript(null, {file: "content_script.js"});
 // });
-
-// Requests to external website ======================================
-
-// var xhr = new XMLHttpRequest();
-
-// xhr.open("GET", "http://api.example.com/data.json", true);
-// xhr.onreadystatechange = function() {
-//   if (xhr.readyState == 4) {
-//   // JSON.parse does not evaluate the attacker's scripts.
-//     var resp = JSON.parse(xhr.responseText);
-//     document.getElementById("resp").innerText = xhr.responseText;
-//   }
-// }
-// xhr.send();

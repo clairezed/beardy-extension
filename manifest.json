@@ -16,6 +16,7 @@
     // "https://beardy-website.herokuapp.com/",
     "declarativeContent",
     "webNavigation",
+    "storage",
     "http://*/*",
     "https://*/*"
    ],
