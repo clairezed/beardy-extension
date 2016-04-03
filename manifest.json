@@ -7,18 +7,8 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
     },
-
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-
   "permissions": [
-    // "activeTab",
-    // "https://beardy-website.herokuapp.com/",
-    "tabs",
-    // "webNavigation",
-    "storage",
+    // "tabs",
     "http://*/*",
     "https://*/*"
    ],
@@ -32,7 +22,7 @@
        "js": ["content.js"]
      }
   ],
-  "optional_permissions": ["*://*/*"],
+  // "optional_permissions": ["*://*/*"],
   "web_accessible_resources": [ "img/*.png" ],
   "manifest_version": 2
 

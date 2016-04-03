@@ -1,7 +1,17 @@
-Beardy extension
+Beardy extension - "La Barbe ! extension"
 =========
 
 *2016/01 - Development in progress*
+
+# What is it ?
+
+La Barbe is a French direct action feminist group that fights gender inequality with sarcastic humour and fake beards.
+This extension aims to highlight companies, events, organizations towards which La Barbe directed its actions.
+This extension is directly linked to a small fake La Barbe website, that presents a few of these actions and has a dedicated API requested by the extension.
+
+Website url : https://beardy-website.herokuapp.com
+
+This extension is a personal exercise independant from La Barbe. It has no direct link with the activist group.
 
 # How to
 
