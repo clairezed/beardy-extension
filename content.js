@@ -1,12 +1,120 @@
-console.log("Content.js -- youhouuuuuuuuuu");
-console.log(organization);
-// var websites = chrome.runtime.getBackgroundPage().websites;
+var organization;
 
-// console.log(window.location)
+// Call to external website, check current site
+function checkUrl() {
+  if(websiteNotVisitedYet()) {
+    var url = window.location.host;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://beardy-website.herokuapp.com/api/organizations?website_url="+url, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        // JSON.parse does not evaluate the attacker's scripts.
+        var resp = JSON.parse(xhr.responseText);
+        if(resp.length > 0) {
+          organization = resp[0];
+          // saving in session to prevent modal from constantly showing
+          sessionStorage.setItem('beardy_v', 'true')
+          buildModalDiv();
+        }
+      }
+    }
+    xhr.send();
+  }
+}
+
+var websiteNotVisitedYet = function() {
+  // return sessionStorage.beardy_v !== 'true';
+  return true;
+}
+// Construction modalDiv ============================================
+
+
+var buildModalDiv = function() {
+  var modalDiv = document.createElement('div');
+  modalDiv.setAttribute('class', 'beardyModal beardyModal--animated');
+  modalDiv.setAttribute('title', 'La barbe !');
+
+  var header = buildHeader()
+  modalDiv.appendChild(header)
+
+  var arrow = document.createElement('span');
+  arrow.setAttribute('class', 'beardyModal--arrow');
+  modalDiv.appendChild(arrow)
+
+  var content = buildContent();
+  modalDiv.appendChild(content);
+
+  var footer = buildFooter(modalDiv);
+  modalDiv.appendChild(footer);
+
+  // return modalDiv;
+  document.body.appendChild(modalDiv);
+}
+
+var buildHeader = function() {
+  var headerDiv = document.createElement('div');
+  headerDiv.setAttribute('class', 'beardyModal--header');
+
+  var pictureWrapper = document.createElement('div');
+  pictureWrapper.setAttribute('class', 'beardyModal--pictureWrapper');
+  headerDiv.appendChild(pictureWrapper);
+
+  var beardPic = document.createElement('img');
+  beardPic.setAttribute('class', 'beardyModal--picture');
+  beardPic.src = chrome.extension.getURL("img/beard01.png");
+  pictureWrapper.appendChild(beardPic);
+
+  var title = document.createElement('h1');
+  title.setAttribute('class', 'beardyModal--title');
+  title.innerText = "LA BARBE !"
+  headerDiv.appendChild(title);
+
+  return headerDiv;
+}
+
+var buildContent = function() {
+  var contentDiv = document.createElement('div');
+  contentDiv.setAttribute('class', 'beardyModal--content');
+
+  var paragraph1 = document.createElement('p');
+  paragraph1.innerText = "La Barbe félicite";
+  contentDiv.appendChild(paragraph1);
+  var paragraph2 = document.createElement('p');
+  paragraph2.innerText = organization.name
+  paragraph2.setAttribute('class', 'beardyModal--strong-paragraph');
+  contentDiv.appendChild(paragraph2);
+  var paragraph3 = document.createElement('p');
+  paragraph3.innerText = "pour son sens aigu et affirmé de l'entre couilles.";
+  contentDiv.appendChild(paragraph3);
+
+  return contentDiv;
+}
+
+var buildFooter = function(modalDiv) {
+  var footerDiv = document.createElement('div');
+  footerDiv.setAttribute('class', 'beardyModal--footer');
+
+  var dismissBtn = document.createElement('button');
+  dismissBtn.setAttribute('class', 'beardyModal--dismiss-btn');
+  dismissBtn.innerText = "Fermer";
+  footerDiv.appendChild(dismissBtn);
+
+  var ctaBtn = document.createElement('a');
+  ctaBtn.setAttribute('class', 'beardyModal--button');
+  var link = build_link(organization);
+  ctaBtn.href = link;
+  ctaBtn.title = "Voir pourquoi cette organisation s'est faite barbée"
+  ctaBtn.target = '_blank';
+  ctaBtn.innerText = "En savoir plus";
+  footerDiv.appendChild(ctaBtn);
+
+  bind_dismiss_button(dismissBtn, modalDiv);
+
+  return footerDiv;
+}
 
 var build_link = function(organization) {
   var link =  "https://beardy-website.herokuapp.com/#" + organization.slug
-  console.log(link);
   return link
 }
 
@@ -16,170 +124,11 @@ var bind_dismiss_button = function(btn, container) {
   }, false);
 }
 
-// Construction modalDiv ============================================
-
-var basicModalDiv = function() {
-  var modalDiv = document.createElement('div');
-  modalDiv.setAttribute('class', 'beardyModal beardyModal--animated');
-  modalDiv.setAttribute('title', 'La Barbe !');
-
-  var dismiss_btn = document.createElement('button');
-  dismiss_btn.setAttribute('class', 'beardyModal--dismiss-btn');
-  dismiss_btn.innerHTML = "X";
-  modalDiv.appendChild(dismiss_btn);
-
-  var title = document.createElement('h1');
-  title.setAttribute('class', 'beardyModal--title');
-  title.innerHTML = "La barbe !"
-  modalDiv.appendChild(title);
-
-  var body_wrapper = document.createElement('div');
-  body_wrapper.setAttribute('class', 'beardyModal--body-wrapper');
-
-  var beard_pic = document.createElement('img');
-  beard_pic.setAttribute('class', 'beardyModal--picture');
-  beard_pic.src = chrome.extension.getURL("img/beard01.png");
-  body_wrapper.appendChild(beard_pic);
-
-  var paragraph = document.createElement('p');
-  paragraph.setAttribute('class', 'beardyModal--paragraph');
-  paragraph.innerHTML = "<strong>"+ organization.name + "</strong>, une belle assemblée virile que la barbe félicite !";
-  body_wrapper.appendChild(paragraph);
-
-  modalDiv.appendChild(body_wrapper);
-
-  var button = document.createElement('a');
-  button.setAttribute('class', 'beardyModal--button');
-  var link = build_link(organization);
-  button.href = link;
-  button.target = '_blank';
-  button.innerHTML = "En savoir plus";
-  modalDiv.appendChild(button);
-
-  bind_dismiss_button(dismiss_btn, modalDiv);
-
-  return modalDiv;
-}
-
-var buildModalDivFromScratch = function() {
-  console.log("buildModalDivFromScratch");
-  var modalDiv = basicModalDiv();
-  document.body.appendChild(modalDiv);
-};
-
-
-
-buildModalDivFromScratch();
-
-
-// SHADOW DOM TRY ======================================
-
-// var lightShadowDomModalDiv = function() {
-//   var modalDiv = basicModalDiv();
-
-//   modalDiv.style.cssText =
-//     'position: fixed;' +
-//     'top: 5%;' +
-//     'right: 5%;' +
-//     'display: block;' +
-//     'width: 200px;' +
-//     'height: 200px;' +
-//     'z-index: 1000;' +
-//     'background-color: white;' +
-//     'padding: 30px;' +
-//     'box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 3px'
-
-//   var holder = document.createElement('div');
-//   holder.setAttribute('id', 'beardyModalHolder');
-
-//   var shadow = holder.createShadowRoot();
-//   console.log("ROOT : ")
-//   console.log(shadow)
-
-//   // shadow.resetStyleInheritance = true;
-//   shadow.appendChild(modalDiv);
-
-//   document.body.appendChild(holder);
-// }
-
-// lightShadowDomModalDiv();
-
-// SHADOW DOM + TEMPLATE TRY ======================================
-
-// var templateModalDiv = function() {
-//   var link = document.createElement('link');
-//   link.setAttribute('rel', 'import');
-//   link.setAttribute('href', chrome.extension.getURL('modal-element.html'));
-//   link.onload = function() {
-//     var elem = document.createElement('my-element');
-//     document.body.appendChild(elem);
-//     elem.init(); // Error: undefined is not a function
-//   };
-
-//   var script = document.createElement('<script>');
-//   script.src = chrome.extension.getURL('something.js');
-//   document.appendChild(script);
-
-
-//   document.body.appendChild(link);
-// }
-
-// <template id="beardyModalTemplate">
-// <style>
-// .beardyModal{
-//   font-family: sans-serif;
-//   color: black:
-//   position: fixed;
-//   top: 5%;
-//   right: 5%;
-//   display: block;
-//   width: 200px;
-//   height: 200px;
-//   z-index: 1000;
-//   background-color: white;
-//   padding: 30px;
-//   box-shadow: rgba(0, 0, 0, 0.5) 5px 5px 3px;
-// }
-// </style>
-//   <div class="beardyModal" title="La Barbe !">
-//     <h1>La barbe !</h1>
-//     <p>Festival d'Angouleme, une belle assemblée virile que la barbe félicite !</p>
-//   </div>
-// </template>
-
-// var t = document.querySelector('#beardyModalTemplate');
-// t.content.querySelector('img').src = 'http://...';
-// document.body.appendChild(t.content.cloneNode(true));
-
-// var shadow = document.querySelector('#beardyModalHolder').createShadowRoot();
-// //var shadow = document.querySelector('#beardyModalHolder').createShadowRoot();
-// var template = document.querySelector('#beardyModalTemplate');
-// var clone = document.importNode(template.content, true);
-// shadow.appendChild(clone);
-
-
-
-
-// document.getElementsByTagName('body')[0].appendChild(modalDiv)
-
-// console.log(websites);
-// if (confirm('Open dialog for testing?'))
-//     chrome.runtime.sendMessage({type:'request_password'});
-
-
+checkUrl();
 
 
 // Injecting content in current tab ---------------------------------------------
 // To inject CSS, use tabs.insertCSS.
-
-
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//   chrome.tabs.executeScript(null, {file: "content_script.js"});
-// });
-
-
-//Code for displaying <extensionDir>/images/myimage.png:
-// var imgURL = chrome.extension.getURL("images/myimage.png");
 
 
 // Communicating --------------------------------------------------------
@@ -200,4 +149,4 @@ buildModalDivFromScratch();
 
 // Security --------------------------------------------------------------
 // - if your content script receives content from another web site (for example, by making an  XMLHttpRequest), be careful to filter that content for cross-site scripting attacks before injecting the content into the current page.
-//  - prefer to inject content via innerText rather than innerHTML.
+//  - prefer to inject content via innerText rather than innerText.

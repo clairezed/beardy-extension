@@ -2,57 +2,38 @@
   "name": "Beard Extension",
   "version": "0.0.1",
   "description": "La barbe !",
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-  "page_action" :
-  {
-    "default_icon" : "icons/icon-19.png",
-    "default_title" : "beardy website !"
-  },
-  "permissions": [
-    "activeTab",
-    // "https://beardy-website.herokuapp.com/",
-    "declarativeContent",
-    "webNavigation",
-    "storage",
-    "http://*/*",
-    "https://*/*"
-   ],
-   "optional_permissions": ["*://*/*"],
-   // "optionnal_permissions" ??
   "icons": {
     "19": "icons/icon-19.png",
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
     },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "permissions": [
+    // "activeTab",
+    // "https://beardy-website.herokuapp.com/",
+    "tabs",
+    // "webNavigation",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+   ],
    "content_scripts": [
      {
        "matches":  ["*://*/*"],
-       "css": ["css/styles.css"]//,
-       //"js":       ["content.js"]
-  //      "run_at":     "document_idle",
-  //      "all_frames": false
+       "css": ["css/styles.css"]
+     },
+     {
+       "matches":  ["*://*/*"],
+       "js": ["content.js"]
      }
   ],
+  "optional_permissions": ["*://*/*"],
   "web_accessible_resources": [ "img/*.png" ],
- // "content_security_policy": "[POLICY STRING GOES HERE]"
   "manifest_version": 2
 
-  // "omnibox": { "keyword" : "yeah" },
-  // "browser_action": {
-  //     "default_icon": { "19": "icons/19x19.png", "38": "icons/38x38.png" },
-  //     "default_title": "That's the tool tip",
-  //     "default_popup": "browseraction/popup.html"
-  // },
-
-  // "chrome_url_overrides" : {
-  //     "newtab": "newtab/newtab.html"
-  // },
-  // "content_scripts": [{
-  //     "matches": ["http://*/*", "https://*/*"],
-  //     "js": ["content.js"]
-  // }],
-  // "devtools_page": "devtools/devtools.html"
 }
