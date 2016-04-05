@@ -23,8 +23,8 @@ function checkUrl() {
 }
 
 var websiteNotVisitedYet = function() {
-  // return sessionStorage.beardy_v !== 'true';
-  return true;
+  return sessionStorage.beardy_v !== 'true';
+  // return true;
 }
 // Construction modalDiv ============================================
 
